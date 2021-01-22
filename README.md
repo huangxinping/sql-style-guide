@@ -1,15 +1,16 @@
 
-# Mazur's SQL Style Guide
+# Mazur 的 SQL 风格指南
 
-Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a data analyst who has worked at several startups to help them use data to grow their businesses. This guide is an attempt to document my preferences for formatting SQL in the hope that it may be of some use to others. If you or your team do not already have a SQL style guide, this may serve as a good starting point which you can adopt and update based on your preferences. 
+您好！我是[Matt Mazur](https://mattmazur.com/) ，是一名数据分析师，曾在几家初创公司工作过，帮助公司利用数据发展业务。本指南记录了我对格式化 SQL 的喜好，希望对其他人有一些用处。如果您或您的团队还没有 SQL 风格指南，那么它可以作为一个很好的起点，您可以根据自己的喜好来采用和更新它。
 
-Also, I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
+另外，我是一个坚定的信仰者[Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364)。如果你不同意它, [给我私信](https://mattmazur.com/contact/)， 我会喜欢并一起讨论的.
 
-If you're interested in this topic, you may also enjoy my [LookML Style Guide](https://github.com/mattm/lookml-style-guide) or my [blog](https://mattmazur.com/category/analytics/) where I write about analytics and data analysis.
+如果你喜欢这个课题，你应该也喜欢我的[LookML Style Guide](https://github.com/mattm/lookml-style-guide)或者我的[博客](https://mattmazur.com/category/analytics/)，我写了很多关于分析和数据分析的文章.
 
-## Example
+## 例子
 
-Here's a non-trivial query to give you an idea of what this style guide looks like in the practice:
+这里是一些比较简单的查询，主要是为了展示下这个指南：
+
 
 ```sql
 with hubspot_interest as (
@@ -53,132 +54,133 @@ final as (
 
 select * from final
 ```
-## Guidelines
 
-### Use lowercase SQL
+## 指南
 
-It's just as readable as uppercase SQL and you won't have to constantly be holding down a shift key.
+### 使用小写字母 SQL
+
+它就像大写 SQL 一样易读，而且你不必总是按住 Shift 键。
 
 ```sql
--- Good
+-- 好
 select * from users
 
--- Bad
+-- 不好
 SELECT * FROM users
 
--- Bad
+-- 不好
 Select * From users
 ```
 
-### Single line vs multiple line queries
+### 单行查询 vs 多行查询
 
-The only time you should place all of your SQL on a single line is when you're selecting one thing and there's no additional complexity in the query:
+只需要查询单列，则推荐单行：
 
 ```sql
--- Good
+-- 好
 select * from users
 
--- Good
+-- 好
 select id from users
 
--- Good
+-- 好
 select count(*) from users
 ```
 
-Once you start adding more columns or more complexity, the query becomes easier to read if it's spread out on multiple lines:
+一旦你需要查询更多的列或比较复杂，分散在多行可以变得更容易阅读:
 
 ```sql
--- Good
+-- 好
 select
     id,
     email,
     created_at
 from users
 
--- Good
+-- 好
 select *
 from users
 where email = 'example@domain.com'
 
--- Good
+-- 好
 select
     user_id,
     count(*) as total_charges
 from charges
 group by user_id
 
--- Bad
+-- 不好
 select id, email, created_at
 from users
 
--- Bad
+-- 不好
 select id,
     email
 from users
 ```
 
-### Left align SQL keywords
+### 左对齐 SQL 关键字
 
-Some IDEs have the ability to automatically format SQL so that the spaces after the SQL keywords are vertically aligned. This is cumbersome to do by hand (and in my opinion harder to read anyway) so I recommend just left aligning all of the keywords:
+有些 IDE 能够自动格式化 SQL，以便 SQL 关键字之后的空格垂直对齐。手动做这个格式化非常麻烦（在我看来这样也更难阅读），所以我建议所有的关键字都左对齐。
 
 ```sql
--- Good
+-- 好
 select id, email
 from users
 where email like '%@gmail.com'
 
--- Bad
+-- 不好
 select id, email
   from users
  where email like '%@gmail.com'
 ```
 
-### Use single quotes
+### 使用单引号
 
-Some SQL dialects like BigQuery support using double quotes, but for most dialects double quotes will wind up referring to column names. For that reason, single quotes are preferable:
+有些 SQL 分支（例如 BigQuery）支持使用双引号，但是对于大多数分支，双引号都使用在列名上，因此最好使用单引号。
 
 ```sql
--- Good
+-- 好
 select *
 from users
 where email = 'example@domain.com'
 
--- Bad
+-- 不好
 select *
 from users
 where email = "example@domain.com"
 ```
 
-### Use `!=` over `<>`
+### 使用 `!=` 而不是 `<>`
 
-Simply because `!=` reads like "not equal" which is closer to how we'd say it out loud.
+很简单，因为 `!=` 看起来像 “不等于”，更接近我们想要表达的意思。
 
 ```sql
--- Good
+-- 好
 select count(*) as paying_users_count
 from users
 where plan_name != 'free'
 ```
 
-### Commas should be at the the end of lines
+### 逗号应该在行尾
 
 ```sql
--- Good
+-- 好
 select
     id,
     email
 from users
 
--- Bad
+-- 不好
 select
     id
     , email
 from users
 ```
 
-### Indenting where conditions
+### where 条件的缩进
 
-When there's only one where condition, leave it on the same line as `where`:
+当只有一个条件时，与 `where` 保持在同一行：
 
 ```sql
 select email
@@ -186,7 +188,8 @@ from users
 where id = 1234
 ```
 
-When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the end of the previous condition:
+当有多个条件时，每一个条件都比 `where` 缩进一层。将逻辑运算符放在前一个条件的末尾：
+
 
 ```sql
 select id, email
@@ -196,24 +199,24 @@ where
     vertical = 'work'
 ```
 
-### Avoid spaces inside of parenthesis
+### 避免括号内的空格
 
 ```sql
--- Good
+-- 好
 select *
 from users
 where id in (1, 2)
 
--- Bad
+-- 不好
 select *
 from users
 where id in ( 1, 2 )
 ```
 
-### Break long lists of `in` values into multiple indented lines
+### `in` 中比较长的列表，应该分在多个不同的缩进行
 
 ```sql
--- Good
+-- 好
 select *
 from users
 where email in (
@@ -224,29 +227,29 @@ where email in (
 )
 ```
 
-### Table names should be a plural snake case of the noun
+### 表名应该是名称复数蛇形风格
 
 ```sql
--- Good
+-- 好
 select * from users
 select * from visit_logs
 
--- Bad
+-- 不好
 select * from user
 select * from visitLog
 ```
 
-### Column names should be snake_case
+### 列名应该是蛇形风格
 
 ```sql
--- Good
+-- 好
 select
     id,
     email,
     timestamp_trunc(created_at, month) as signup_month
 from users
 
--- Bad
+-- 不好
 select
     id,
     email,
@@ -254,25 +257,25 @@ select
 from users
 ```
 
-### Column name conventions
+### 列名约定
 
-* Boolean fields should be prefixed with `is_`, `has_`, or `does_`. For example, `is_customer`, `has_unsubscribed`, etc.
-* Date-only fields should be suffixed with `_date`. For example, `report_date`.
-* Date+time fields should be suffixed with `_at`. For example, `created_at`, `posted_at`, etc.
+* Boolean 类型应该有 `is_`、`has_` 或 `does_` 前缀。例如 `is_customer`、 `has_unsubscribed` 等。
+* Date-only 类型应该有 `_date` 后缀。例如 `report_date` 等。
+* Date+time 类型应该有 `_at` 后缀。例如 `created_at`、`posted_at` 等。
 
-### Column order conventions
+### 列命约定
 
-Put the primary key first, followed by foreign keys, then by all other columns. If the table has any system columns (`created_at`, `updated_at`, `is_deleted`, etc.), put those last.
+将主键放到最前面，然后是外键，最后是其他列。如果有任何系统列（如 `created_at`、`updated_at`、`is_deleted` 等等，把它们放到最后。
 
 ```sql
--- Good
+-- 好
 select
     id,
     name,
     created_at
 from users
 
--- Bad
+-- 不好
 select
     created_at,
     name,
@@ -280,19 +283,19 @@ select
 from users
 ```
 
-### Include `inner` for inner joins
+### 显性 `inner`，在内部连接 
 
-Better to be explicit so that the join type is crystal clear:
+最好是显性写出 `inner join`，而不是省略 `inner`
 
 ```sql
--- Good
+-- 好
 select
     users.email,
     sum(charges.amount) as total_revenue
 from users
 inner join charges on users.id = charges.user_id
 
--- Bad
+-- 不好
 select
     users.email,
     sum(charges.amount) as total_revenue
@@ -300,12 +303,12 @@ from users
 join charges on users.id = charges.user_id
 ```
 
-### For join conditions, put the table that was referenced first immediately after the `on`
+### 对于 `join` 条件，按引用的表顺序排序到 `on` 之后
 
-By doing it this way it makes it easier to determine if your join is going to cause the results to fan out:
+通过这样做，可以更容易确定连接是否导致结果呈扇形分布：
 
 ```sql
--- Good
+-- 好
 select
     ...
 from users
@@ -318,17 +321,17 @@ from charges
 left join users on charges.user_id = users.id
 -- foreign_key = primary_key --> many-to-one --> no fanout
 
--- Bad
+-- 不好
 select
     ...
 from users
 left join charges on charges.user_id = users.id
 ```
 
-### Single join conditions should be on the same line as the join
+### 单个连接条件应与 `join` 在同一行上
 
 ```sql
--- Good
+-- 好
 select
     users.email,
     sum(charges.amount) as total_revenue
@@ -336,7 +339,7 @@ from users
 inner join charges on users.id = charges.user_id
 group by email
 
--- Bad
+-- 不好
 select
     users.email,
     sum(charges.amount) as total_revenue
@@ -346,10 +349,10 @@ on users.id = charges.user_id
 group by email
 ```
 
-When you have mutliple join conditions, place each one on their own indented line:
+当有多个连接条件时，请将每个条件放在它们自己的缩进行中：
 
 ```sql
--- Good
+-- 好
 select
     users.email,
     sum(charges.amount) as total_revenue
@@ -360,19 +363,19 @@ inner join charges on
 group by email
 ```
 
-### Avoid aliasing table names most of the time
+### 大多数情况下尽量避免表名的别名
 
-It can be tempting to abbreviate table names like `users` to `u` and `charges` to `c`, but it winds up making the SQL less readable:
+将表名 `users` 缩写为 `u`，将 `charges` 缩写为 `c`，这可能很诱人，但这最终会降低 SQL 的可读性
 
 ```sql
--- Good
+-- 好
 select
     users.email,
     sum(charges.amount) as total_revenue
 from users
 inner join charges on users.id = charges.user_id
 
--- Bad
+-- 不好
 select
     u.email,
     sum(c.amount) as total_revenue
@@ -380,30 +383,28 @@ from users u
 inner join charges c on u.id = c.user_id
 ```
 
-Most of the time you'll want to type out the full table name.
+大多数情况下，最好是使用完整的表名。
 
-There are two exceptions:
-
-If you you need to join to a table more than once in the same query and need to distinguish each version of it, aliases are necessary.
-
-Also, if you're working with long or ambiguous table names, it can be useful to alias them (but still use meaningful names):
+有两个例外：
+- 如果需要在同一个查询中多次连接到一个表，并且需要区分这几个之间的不同，那么就需要别名。
+- 另外，如果表名很长或有歧义，可以使用别名（但仍然需要使用有意义的名称）。
 
 ```sql
--- Good: Meaningful table aliases
+-- 好：有意义的表别名
 select
   companies.com_name,
   beacons.created_at
 from stg_mysql_helpscout__helpscout_companies companies
 inner join stg_mysql_helpscout__helpscout_beacons_v2 beacons on companies.com_id = beacons.com_id
 
--- OK: No table aliases
+-- 还行：没有表别名
 select
   stg_mysql_helpscout__helpscout_companies.com_name,
   stg_mysql_helpscout__helpscout_beacons_v2.created_at
 from stg_mysql_helpscout__helpscout_companies
 inner join stg_mysql_helpscout__helpscout_beacons_v2 on stg_mysql_helpscout__helpscout_companies.com_id = stg_mysql_helpscout__helpscout_beacons_v2.com_id
 
--- Bad: Unclear table aliases
+-- 不好：不清晰的表别名
 select
   c.com_name,
   b.created_at
@@ -411,35 +412,35 @@ from stg_mysql_helpscout__helpscout_companies c
 inner join stg_mysql_helpscout__helpscout_beacons_v2 b on c.com_id = b.com_id
 ```
 
-### Include the table when there is a join, but omit it otherwise
+### 当存在 `join` 时，显性写出表名，否则省略表名
 
-When there are no join involved, there's no ambiguity around which table the columns came from so you can leave the table name out:
+当没有涉及到 `join` 时，就不会对列来自哪个表产生歧义，因此可以省略表名：
 
 ```sql
--- Good
+-- 好
 select
     id,
     name
 from companies
 
--- Bad
+-- 不好
 select
     companies.id,
     companies.name
 from companies
 ```
 
-But when there are joins involved, it's better to be explicit so it's clear where the columns originated:
+当涉及到 `join` 时，最好是显式的，这样就可以清楚地知道列来源：
 
 ```sql
--- Good
+-- 好
 select
     users.email,
     sum(charges.amount) as total_revenue
 from users
 inner join charges on users.id = charges.user_id
 
--- Bad
+-- 不好
 select
     email,
     sum(amount) as total_revenue
@@ -448,51 +449,51 @@ inner join charges on users.id = charges.user_id
 
 ```
 
-### Always rename aggregates and function-wrapped arguments
+### 总是重命名聚合和函数包装的参数
 
 ```sql
--- Good
+-- 好
 select count(*) as total_users
 from users
 
--- Bad
+-- 不好
 select count(*)
 from users
 
--- Good
+-- 好
 select timestamp_millis(property_beacon_interest) as expressed_interest_at
 from hubspot.contact
 where property_beacon_interest is not null
 
--- Bad
+-- 不好
 select timestamp_millis(property_beacon_interest)
 from hubspot.contact
 where property_beacon_interest is not null
 ```
 
-### Be explicit in boolean conditions
+### 明确布尔条件
 
 ```sql
--- Good
+-- 好
 select * from customers where is_cancelled = true
 select * from customers where is_cancelled = false
 
--- Bad
+-- 不好
 select * from customers where is_cancelled
 select * from customers where not is_cancelled
 ```
 
-### Use `as` to alias column names
+### 使用 `as` 作为列名别名
 
 ```sql
--- Good
+-- 好
 select
     id,
     email,
     timestamp_trunc(created_at, month) as signup_month
 from users
 
--- Bad
+-- 不好
 select
     id,
     email,
@@ -500,22 +501,22 @@ select
 from users
 ```
 
-### Group using column names or numbers, but not both
+### 使用列名或列号进行分组，但不要同时使用两种
 
-I prefer grouping by name, but grouping by numbers is [also fine](https://blog.getdbt.com/write-better-sql-a-defense-of-group-by-1/).
+我更喜欢按列名分组，但按数字分组也是[极好的](https://blog.getdbt.com/write-better-sql-a-defense-of-group-by-1/)。
 
 ```sql
--- Good
+-- 好
 select user_id, count(*) as total_charges
 from charges
 group by user_id
 
--- Good
+-- 好
 select user_id, count(*) as total_charges
 from charges
 group by 1
 
--- Bad
+-- 不好
 select
     timestamp_trunc(created_at, month) as signup_month,
     vertical,
@@ -524,17 +525,17 @@ from users
 group by 1, vertical
 ```
 
-### Take advantage of lateral column aliasing when grouping by name
+### 按名称分组时，使用别名
 
 ```sql
--- Good
+-- 好
 select
   timestamp_trunc(com_created_at, year) as signup_year,
   count(*) as total_companies
 from companies
 group by signup_year
 
--- Bad
+-- 不好
 select
   timestamp_trunc(com_created_at, year) as signup_year,
   count(*) as total_companies
@@ -542,17 +543,17 @@ from companies
 group by timestamp_trunc(com_created_at, year)
 ```
 
-### Grouping columns should go first
+### 首先应该对列分组
 
 ```sql
--- Good
+-- 好
 select
   timestamp_trunc(com_created_at, year) as signup_year,
   count(*) as total_companies
 from companies
 group by signup_year
 
--- Bad
+-- 不好
 select
   count(*) as total_companies,
   timestamp_trunc(com_created_at, year) as signup_year
@@ -560,12 +561,12 @@ from mysql_helpscout.helpscout_companies
 group by signup_year
 ```
 
-### Aligning case/when statements
+### 调整 case/when 语句
 
-Each `when` should be on its own line (nothing on the `case` line) and should be indented one level deeper than the `case` line. The `then` can be on the same line or on its own line below it, just aim to be consistent.
+每个 `when` 都应该独自一行（ `case` 不包含别的信息），并且应该缩进比 `case` 深一层，`then` 可以和 `when` 保持在同一行，也可以换行。
 
 ```sql
--- Good
+-- 好
 select
     case
         when event_name = 'viewed_homepage' then 'Homepage'
@@ -574,7 +575,7 @@ select
     end as page_name
 from events
 
--- Good too
+-- 也不错
 select
     case
         when event_name = 'viewed_homepage'
@@ -585,7 +586,7 @@ select
     end as page_name
 from events
 
--- Bad 
+-- 不好 
 select
     case when event_name = 'viewed_homepage' then 'Homepage'
         when event_name = 'viewed_editor' then 'Editor'
@@ -594,18 +595,18 @@ select
 from events
 ```
 
-### Use CTEs, not subqueries
+### 使用 CTE （公用表表达式），而不是子查询
 
-Avoid subqueries; CTEs will make your queries easier to read and reason about.
+避免使用子查询，CTE 将使查询更容易阅读和理解。
 
-When using CTEs, pad the query with new lines. 
+使用 CTE 时，用新行填充查询。
 
-If you use any CTEs, always have a CTE named `final` and `select * from final` at the end. That way you can quickly inspect the output of other CTEs used in the query to debug the results.
+在使用任意的 CTE 时，始终使用 `final` 和 `select * from final` 。通过这种方式，可以快速检查查询中使用的其他 CTE 输出，以便调试结果。
 
-Closing CTE parentheses should use the same indentation level as `with` and the CTE names.
+结尾的 CTE 括号应该使用与 `with` 和 CTE 名称相同的缩进。
 
 ```sql
--- Good
+-- 好
 with ordered_details as (
 
     select
@@ -626,7 +627,7 @@ final as (
 
 select * from final
 
--- Bad
+-- 不好
 select user_id, name
 from (
     select
@@ -638,29 +639,29 @@ from (
 where details_rank = 1
 ```
 
-### Use meaningful CTE names
+### 使用有意义的 CTE 名称
 
 ```sql
--- Good
+-- 好
 with ordered_details as (
 
--- Bad
+-- 不好
 with d1 as (
 ```
 
-### Window functions
+### 窗口函数
 
-You can leave it all on its own line or break it up into multiple depending on its length:
+你可以把它单独放在一行上，或者根据它的长度把它分成多行：
 
 ```sql
--- Good
+-- 好
 select
     user_id,
     name,
     row_number() over (partition by user_id order by date_updated desc) as details_rank
 from billingdaddy.billing_stored_details
 
--- Good
+-- 好
 select
     user_id,
     name,
@@ -673,10 +674,10 @@ from billingdaddy.billing_stored_details
 
 ## Credits
 
-This style guide was inspired in part by:
+这个风格指南的灵感部分来自于：
 
 * [Fishtown Analytics' dbt Style Guide](https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md#sql-style-guide)
 * [KickStarter's SQL Style Guide](https://gist.github.com/fredbenenson/7bb92718e19138c20591)
 * [GitLab's SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
 
-Hat-tip to Peter Butler, Dan Wyman, Simon Ouderkirk, Alex Cano, Adam Stone, Brian Kim, and Claire Carroll for providing feedback on this guide.
+向 Peter Butler、Dan Wyman、Simon Ouderkirk、Alex Cano、Adam Stone、Brian Kim 和 Claire Carroll 致敬，感谢他们对本指南提供的反馈。
