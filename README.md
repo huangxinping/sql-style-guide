@@ -1,11 +1,11 @@
 
 # Mazur 的 SQL 风格指南
 
-您好！我是[Matt Mazur](https://mattmazur.com/) ，是一名数据分析师，曾在几家初创公司工作过，帮助公司利用数据发展业务。本指南记录了我对格式化 SQL 的喜好，希望对其他人有一些用处。如果您或您的团队还没有 SQL 风格指南，那么它可以作为一个很好的起点，您可以根据自己的喜好来采用和更新它。
+您好！我是 [Matt Mazur](https://mattmazur.com/)，是一名数据分析师，曾在几家初创公司工作过，帮助公司利用数据发展业务。本指南记录了我对格式化 SQL 的喜好，希望对其他人有一些用处。如果您或您的团队还没有 SQL 风格指南，那么它可以作为一个很好的起点，您可以根据自己的喜好来采用和更新它。
 
-另外，我是一个坚定的信仰者[Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364)。如果你不同意它, [给我私信](https://mattmazur.com/contact/)， 我会喜欢并一起讨论的.
+另外，我是 [“有强烈的观点，但不盲目坚持”（Strong Opinions, Weakly Held）](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) 的人。如果你对这篇文档有任何异议, [给我私信](https://mattmazur.com/contact/)， 我愿意一起讨论。
 
-如果你喜欢这个课题，你应该也喜欢我的[LookML Style Guide](https://github.com/mattm/lookml-style-guide)或者我的[博客](https://mattmazur.com/category/analytics/)，我写了很多关于分析和数据分析的文章.
+如果你喜欢这个话题，你应该也喜欢我的 [LookML Style Guide](https://github.com/mattm/lookml-style-guide) 或者我的[博客](https://mattmazur.com/category/analytics/)，我写了很多关于分析和数据分析的文章.
 
 ## 例子
 
@@ -59,7 +59,7 @@ select * from final
 
 ### 使用小写字母 SQL
 
-它就像大写 SQL 一样易读，而且你不必总是按住 Shift 键。
+它就像大写 SQL 一样易读，而且你不必总是按住 `Shift` 键。
 
 ```sql
 -- 好
@@ -74,7 +74,7 @@ Select * From users
 
 ### 单行查询 vs 多行查询
 
-只需要查询单列，则推荐单行：
+仅在查询一个事物，且不复杂的情况下，使用单行查询：
 
 ```sql
 -- 好
@@ -180,7 +180,7 @@ from users
 
 ### where 条件的缩进
 
-当只有一个条件时，与 `where` 保持在同一行：
+当只有一个条件时，条件与 `where` 保持在同一行：
 
 ```sql
 select email
@@ -227,7 +227,7 @@ where email in (
 )
 ```
 
-### 表名应该是名称复数蛇形风格
+### 表名应该是蛇形复数名词风格
 
 ```sql
 -- 好
@@ -259,13 +259,13 @@ from users
 
 ### 列名约定
 
-* Boolean 类型应该有 `is_`、`has_` 或 `does_` 前缀。例如 `is_customer`、 `has_unsubscribed` 等。
-* Date-only 类型应该有 `_date` 后缀。例如 `report_date` 等。
-* Date+time 类型应该有 `_at` 后缀。例如 `created_at`、`posted_at` 等。
+* 布尔值类型应该有 `is_`、`has_` 或 `does_` 前缀。例如 `is_customer`、 `has_unsubscribed` 等。
+* 只有日期的类型应该有 `_date` 后缀。例如 `report_date` 等。
+* 日期时间类型应该有 `_at` 后缀。例如 `created_at`、`posted_at` 等。
 
-### 列命约定
+### 列顺序约定
 
-将主键放到最前面，然后是外键，最后是其他列。如果有任何系统列（如 `created_at`、`updated_at`、`is_deleted` 等等，把它们放到最后。
+将主键放到最前面，然后是外键，最后是其他列。如果有任何系统列（如 `created_at`、`updated_at`、`is_deleted`），把它们放到最后。
 
 ```sql
 -- 好
@@ -283,7 +283,7 @@ select
 from users
 ```
 
-### 显性 `inner`，在内部连接 
+### 内连接写出 `inner`
 
 最好是显性写出 `inner join`，而不是省略 `inner`
 
@@ -365,7 +365,7 @@ group by email
 
 ### 大多数情况下尽量避免表名的别名
 
-将表名 `users` 缩写为 `u`，将 `charges` 缩写为 `c`，这可能很诱人，但这最终会降低 SQL 的可读性
+将表名 `users` 缩写为 `u`，将 `charges` 缩写为 `c`，这可能很诱人，但这最终会降低 SQL 的可读性：
 
 ```sql
 -- 好
@@ -387,7 +387,7 @@ inner join charges c on u.id = c.user_id
 
 有两个例外：
 - 如果需要在同一个查询中多次连接到一个表，并且需要区分这几个之间的不同，那么就需要别名。
-- 另外，如果表名很长或有歧义，可以使用别名（但仍然需要使用有意义的名称）。
+- 另外，如果表名很长或有歧义，可以使用别名（但仍然需要使用有意义的名称）：
 
 ```sql
 -- 好：有意义的表别名
@@ -471,7 +471,7 @@ from hubspot.contact
 where property_beacon_interest is not null
 ```
 
-### 明确布尔条件
+### 显式写出布尔条件
 
 ```sql
 -- 好
@@ -483,7 +483,7 @@ select * from customers where is_cancelled
 select * from customers where not is_cancelled
 ```
 
-### 使用 `as` 作为列名别名
+### 定义列名别名时写出 `as` 
 
 ```sql
 -- 好
@@ -525,7 +525,7 @@ from users
 group by 1, vertical
 ```
 
-### 按名称分组时，使用别名
+### 按名称分组时，利用在旁边添加的别名
 
 ```sql
 -- 好
@@ -543,7 +543,7 @@ from companies
 group by timestamp_trunc(com_created_at, year)
 ```
 
-### 首先应该对列分组
+### 分组的列放在前面
 
 ```sql
 -- 好
@@ -563,7 +563,7 @@ group by signup_year
 
 ### 调整 case/when 语句
 
-每个 `when` 都应该独自一行（ `case` 不包含别的信息），并且应该缩进比 `case` 深一层，`then` 可以和 `when` 保持在同一行，也可以换行。
+每个 `when` 都应该独自一行（ `case` 行单独成行），并且应该缩进比 `case` 深一层，`then` 可以和 `when` 保持在同一行，也可以换行。
 
 ```sql
 -- 好
@@ -597,11 +597,11 @@ from events
 
 ### 使用 CTE （公用表表达式），而不是子查询
 
-避免使用子查询，CTE 将使查询更容易阅读和理解。
+CTE 避免了子查询，使查询更容易阅读和理解。
 
-使用 CTE 时，用新行填充查询。
+使用 CTE 时，将查询放在新行中。
 
-在使用任意的 CTE 时，始终使用 `final` 和 `select * from final` 。通过这种方式，可以快速检查查询中使用的其他 CTE 输出，以便调试结果。
+在任何情况下使用 CTE 时，都要在最后一个 CTE 中使用 `select *`。通过这种方式，可以快速检查查询中使用的其他 CTE，以便调试结果。
 
 结尾的 CTE 括号应该使用与 `with` 和 CTE 名称相同的缩进。
 
