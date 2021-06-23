@@ -3,7 +3,7 @@
 
 您好！我是 [Matt Mazur](https://mattmazur.com/)，是一名数据分析师，曾在几家初创公司工作过，帮助公司利用数据发展业务。本指南记录了我对格式化 SQL 的喜好，希望对其他人有一些用处。如果您或您的团队还没有 SQL 风格指南，那么它可以作为一个很好的起点，您可以根据自己的喜好来采用和更新它。
 
-另外，我是 [“有强烈的观点，但不盲目坚持”（Strong Opinions, Weakly Held）](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) 的人。如果你对这篇文档有任何异议, [给我私信](https://mattmazur.com/contact/)， 我愿意一起讨论。
+另外，我是坚持 [“有强烈的观点，但不盲目坚持”（Strong Opinions, Weakly Held）](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) 这种态度的人。如果你对这篇文档有任何异议, [给我私信](https://mattmazur.com/contact/)， 我愿意一起讨论。
 
 如果你喜欢这个话题，你应该也喜欢我的 [LookML Style Guide](https://github.com/mattm/lookml-style-guide) 或者我的[博客](https://mattmazur.com/category/analytics/)，我写了很多关于分析和数据分析的文章.
 
@@ -87,7 +87,7 @@ select id from users
 select count(*) from users
 ```
 
-一旦你需要查询更多的列或比较复杂，分散在多行可以变得更容易阅读:
+一旦你需要查询更多的列或比较复杂，分散在多行可以变得更容易阅读：
 
 ```sql
 -- 好
